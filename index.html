@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Семейное древо</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -17,7 +17,6 @@
         }
         .section h1, .section h2 {
             margin-bottom: 0.5em;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
         }
         .section p {
             max-width: 800px;
@@ -30,6 +29,15 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
+        }
+        .intro h2, .family-members h2 {
+            margin-top: 0;
+        }
+        .family-members {
+            background: #fff;
+        }
+        .intro {
+            background: #f9f9f9;
         }
         .family-members .members {
             display: flex;
@@ -73,12 +81,13 @@
             content: "";
             position: absolute;
             top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.4);
         }
         .cover h1 {
             color: white;
             font-size: 3em;
             z-index: 2;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
         }
         @media(max-width: 600px){
             .cover h1 { font-size: 2em; }
@@ -94,6 +103,7 @@
     </div>
 
     <div class="section intro">
+        <h2>О нас</h2>
         <p>Этот сайт создан для того, чтобы собрать воедино разрозненную историю нашей семьи, сохранить память о предках и подарить её будущим поколениям.</p>
         <p>Мы хотим, чтобы здесь хранились не просто имена и даты, но и фотографии, истории из жизни, тёплые воспоминания, которыми когда-то дорожили наши родители и деды. Пусть это место станет уютным домом для памяти и встреч — чтобы каждый из нас смог узнать больше о своих корнях и почувствовать себя частью чего-то большого и важного.</p>
     </div>
@@ -115,9 +125,9 @@
     new fullpage('#fullpage', {
         autoScrolling: true,
         navigation: true,
+        showActiveTooltip: false,
         anchors: ['home', 'about', 'stories'],
-        navigationTooltips: ['Главная', 'О нас', 'Наши истории'],
-        showActiveTooltip: true,
+        navigationTooltips: ['', '', ''],
         scrollOverflow: true
     });
 </script>
