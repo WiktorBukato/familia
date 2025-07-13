@@ -82,6 +82,22 @@
     .member h3 {
       margin: 0.5em 0;
     }
+body {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+header, section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2em;
+}
+    
     @media (max-width: 600px) {
       header {
         height: 30vh;
