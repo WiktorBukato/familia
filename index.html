@@ -18,7 +18,7 @@ header {
     background: url('family_photo.jpg') top center / cover no-repeat;
     height: 60vh;
     background-color:  #f5f5f5;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);/* если будут полосы, пусть будут тёмные */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,6 +78,21 @@ header {
                 align-items: center;
             }
         }
+        .family-members {
+    background: #fff;
+    padding: 3em 2em;
+    text-align: center;
+}
+.family-members h2 {
+    font-size: 2.2em;
+    margin-bottom: 0.5em;
+}
+.family-members p {
+    max-width: 800px;
+    margin: 0 auto 2em;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
     </style>
 </head>
 <body>
@@ -85,20 +100,24 @@ header {
         <h1 class="animate__animated animate__fadeInDown">Семейное древо</h1>
     </header>
 
-    <section class="intro">
-    <p>Этот сайт создан для того, чтобы собрать воедино разрозненную историю нашей семьи, сохранить память о предках и подарить её будущим поколениям. 
-    Здесь мы собираем фотографии, воспоминания, рассказы и документы, чтобы каждая страница напоминала нам о наших корнях и объединяла нас, где бы мы ни находились.</p>
-    <p>Пусть это место станет тёплым уголком семейных воспоминаний, где будут встречаться поколения и узнавать друг о друге самое важное.</p>
+<section class="intro">
+    <p>Этот сайт создан для того, чтобы собрать воедино разрозненную историю нашей семьи, сохранить память о предках и подарить её будущим поколениям.</p>
+    <p>Мы хотим, чтобы здесь хранились не просто имена и даты, но и фотографии, истории из жизни, тёплые воспоминания, которыми когда-то дорожили наши родители и деды.</p>
+    <p>Пусть это место станет уютным домом для памяти и встреч — пусть каждый из нас сможет узнать больше о своих корнях и почувствовать себя частью чего-то большого и важного.</p>
 </section>
 
-    <section class="members">
+<section class="family-members">
+    <h2>Наши истории</h2>
+    <p>Здесь собраны страницы памяти наших родных. Каждая страница посвящена отдельному человеку, его жизни и следу, который он оставил в нашей семье.</p>
+    
+    <div class="members">
         <div class="member animate__animated animate__fadeInUp">
             <img src="KiselevIvanAkulovich.jpg" alt="Киселёв Иван Акулович">
             <h3>Киселёв Иван Акулович</h3>
             <a href="/KiselevIvanAkulovich">Перейти на страницу</a>
         </div>
-        <!-- Здесь можно будет добавить следующих родственников -->
-    </section>
+    </div>
+</section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
     <script>
