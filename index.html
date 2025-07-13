@@ -1,25 +1,100 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Страница памяти Киселёва Ивана Акуловича</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      justify-content: center; /* центрируем по горизонтали */
-    }
-    iframe {
-      width: 80%; /* можно менять — например 60% для уже */
-      height: 100%;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Семейное древо</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background: url('family_photo.jpg') center/cover no-repeat;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        header h1 {
+            font-size: 3em;
+            animation: fadeInDown 2s;
+        }
+        .intro {
+            padding: 2em;
+            text-align: center;
+        }
+        .members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2em;
+            padding: 2em;
+        }
+        .member {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .member:hover {
+            transform: translateY(-5px);
+        }
+        .member img {
+            width: 100%;
+            height: auto;
+        }
+        .member h3 {
+            margin: 0.5em 0;
+        }
+        .member a {
+            display: inline-block;
+            margin: 1em;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2em;
+            }
+            .members {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <iframe src="https://docs.google.com/document/d/e/2PACX-1vTSxfgPFYXxo5vdusF1Cyk6Zy4nTwCzmzLAw3Wd6eGOady-6iZyjUb1926_8SXw9OKkuRB-z3HsThT1/pub?embedded=true"></iframe>
+    <header>
+        <h1 class="animate__animated animate__fadeInDown">Семейное древо Киселёвых</h1>
+    </header>
+
+    <section class="intro">
+        <p>Этот сайт создан для того, чтобы собрать информацию о нашей семье, сохранить память о предках и рассказать живым родственникам о своих корнях. Здесь вы найдёте фотографии, истории и страницы памяти каждого из нас.</p>
+    </section>
+
+    <section class="members">
+        <div class="member animate__animated animate__fadeInUp">
+            <img src="KiselevIvanAkulovich.jpg" alt="Киселёв Иван Акулович">
+            <h3>Киселёв Иван Акулович</h3>
+            <a href="/KiselevIvanAkulovich">Перейти на страницу</a>
+        </div>
+        <!-- Здесь можно будет добавить следующих родственников -->
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
 </body>
 </html>
