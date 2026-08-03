@@ -1,0 +1,1 @@
+for(let i=0;i<10;i++)document.write('<script src="c'+i+'.js"><\/script>');document.write('<script src="run.js"><\/script>');
