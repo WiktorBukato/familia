@@ -1,1 +1,30 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Irregular Verbs Ultimate Challenge</title> <style> body{margin:0;font-family:Arial,sans-serif;background:#eef4ff} .header{background:#1e40af;color:white;padding:20px;text-align:center} .main{padding:20px;max-width:1400px;margin:auto} .card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.15)} .q{padding:8px;border-bottom:1px solid #ddd} input{padding:8px;margin:3px} button{padding:12px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:16px} #certificate{display:none;margin-top:20px;padding:40px;border:8px solid gold;background:#fffbe6;text-align:center} .progress{height:20px;background:#ddd;border-radius:10px;overflow:hidden;margin:10px 0} .bar{height:100%;width:0;background:#22c55e} </style> </head><body> <div class='header'><h1>Irregular Verbs Ultimate Challenge</h1><div id='timer'>Time: 00:00</div></div> <div class='main'><div class='card'> <p>Name: <input id='studentName'></p> <div class='progress'><div class='bar' id='bar'></div></div> <h2>Task 1: Irregular Verbs</h2><div id='verbs'></div> <h2>Task 2: Complete the Sentences</h2><div id='sentences'></div><br> <button onclick='checkAnswers()'>Check Answers</button> <div id='results'></div> <div id='certificate'><h1>Certificate of Completion</h1><p>This certifies that</p><h2 id='certName'></h2><p>has successfully completed the Irregular Verbs Ultimate Challenge.</p><h3 id='certScore'></h3></div> </div></div> <script> const verbs=[['arise','arose','arisen'],['awake','awoke','awoken'],['bear','bore','born'],['begin','began','begun'],['bite','bit','bitten'],['blow','blew','blown'],['break','broke','broken'],['bring','brought','brought'],['build','built','built'],['buy','bought','bought'],['catch','caught','caught'],['choose','chose','chosen'],['come','came','come'],['do','did','done'],['draw','drew','drawn'],['drink','drank','drunk'],['drive','drove','driven'],['eat','ate','eaten'],['fall','fell','fallen'],['feel','felt','felt
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irregular Verbs Ultimate Challenge</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#eef4ff}
+.header{background:#1e40af;color:white;padding:20px;text-align:center}
+.main{padding:20px;max-width:1400px;margin:auto}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.q{padding:8px;border-bottom:1px solid #ddd}
+input{padding:8px;margin:3px}
+button{padding:12px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:16px}
+#certificate{display:none;margin-top:20px;padding:40px;border:8px solid gold;background:#fffbe6;text-align:center}
+.progress{height:20px;background:#ddd;border-radius:10px;overflow:hidden;margin:10px 0}
+.bar{height:100%;width:0;background:#22c55e}
+</style>
+</head><body>
+<div class='header'><h1>Irregular Verbs Ultimate Challenge</h1><div id='timer'>Time: 00:00</div></div>
+<div class='main'><div class='card'>
+<p>Name: <input id='studentName'></p>
+<div class='progress'><div class='bar' id='bar'></div></div>
+<h2>Task 1: Irregular Verbs</h2><div id='verbs'></div>
+<h2>Task 2: Complete the Sentences</h2><div id='sentences'></div><br>
+<button onclick='checkAnswers()'>Check Answers</button>
+<div id='results'></div>
+<div id='certificate'><h1>Certificate of Completion</h1><p>This certifies that</p><h2 id='certName'></h2><p>has successfully completed the Irregular Verbs Ultimate Challenge.</p><h3 id='certScore'></h3></div>
+</div></div>
+<script src="script.js"></script></body></html>
