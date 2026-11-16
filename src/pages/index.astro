@@ -1,0 +1,68 @@
+---
+import Site from '../layouts/Site.astro';
+import FamilyTree from '../components/FamilyTree.astro';
+import { Image } from 'astro:assets';
+import hero from '../assets/cover.webp';
+import storiesImage from '../assets/stories.webp';
+import recipesImage from '../assets/recipes.webp';
+import { loadArchive, pagePath } from '../data/model';
+import { sections, siteName, sitePath } from '../data/site';
+
+const { tree, pages, profiles } = await loadArchive();
+const links = new Map([...profiles].map(([person, page]) => [person, sitePath(pagePath(page))]));
+const artwork = { story: storiesImage, recipe: recipesImage };
+---
+<Site description="Семейное дерево, истории близких и домашние рецепты.">
+  <section class="hero">
+    <div class="hero-media">
+      <div class="hero-scene">
+        <img class="hero-image" src={hero.src} width={hero.width} height={hero.height} alt="Семейная фотосессия в Волосовичах, 2023 год" fetchpriority="high" />
+        {[1, 2, 3, 4].map(level =>
+          <img class="hero-image hero-blur" data-level={level} src={hero.src} width={hero.width} height={hero.height} alt="" aria-hidden="true" />
+        )}
+      </div>
+    </div>
+    <div class="hero-inner">
+      <p class="hero-label">Семейный архив</p>
+      <h1>{siteName}</h1>
+      <p class="hero-description">Семейное дерево, истории близких и рецепты, которые мы храним.</p>
+    </div>
+  </section>
+  <FamilyTree tree={tree} profiles={links} />
+  <div class="collections">
+      {(Object.keys(sections) as (keyof typeof sections)[]).map(kind => {
+        const section = sections[kind];
+        const entries = pages.filter(page => page.data.kind === kind);
+        return <section id={section.id} class="collection" aria-labelledby={`${section.id}-title`}>
+          <div class="shell collection-inner">
+            <div class="collection-visual" data-reveal>
+              <Image src={artwork[kind]} width={920} format="webp" alt="" />
+            </div>
+            <div class="collection-copy" data-reveal>
+              <h2 id={`${section.id}-title`}>{section.title}</h2>
+              <p>{section.description}</p>
+              {entries.length > 0 && <ul class="entry-list">
+                {entries.map(page => <li>
+                  <a href={sitePath(pagePath(page))}>{page.data.title}</a>
+                  <p>{page.data.summary}</p>
+                </li>)}
+              </ul>}
+            </div>
+          </div>
+        </section>;
+      })}
+  </div>
+</Site>
+<script>
+  const targets = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver(entries => {
+      for (const { target, isIntersecting } of entries) {
+        if (!isIntersecting) continue;
+        target.classList.add('is-revealed');
+        observer.unobserve(target);
+      }
+    }, { threshold: .12 });
+    targets.forEach(target => observer.observe(target));
+  }
+</script>

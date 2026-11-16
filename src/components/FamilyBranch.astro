@@ -1,0 +1,21 @@
+---
+import type { FamilyNode } from '../data/model';
+import PersonCard from './PersonCard.astro';
+
+interface Props {
+  branch: FamilyNode;
+  profiles: Map<string, string>;
+}
+
+const { branch, profiles } = Astro.props;
+---
+<li class:list={['family-branch', { 'has-children': branch.children.length > 0 }]}>
+  <div class:list={['household', { 'couple': branch.people.length > 1 }]}>
+    {branch.people.map((person, index) =>
+      <PersonCard person={person} profile={profiles.get(person.id)} relation={index === 0 ? 'birth' : 'marriage'} />
+    )}
+  </div>
+  {branch.children.length > 0 && <ul class="descendants">
+    {branch.children.map(child => <Astro.self branch={child} profiles={profiles} />)}
+  </ul>}
+</li>

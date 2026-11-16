@@ -1,0 +1,57 @@
+---
+import { render } from 'astro:content';
+import Site from '../layouts/Site.astro';
+import { loadArchive, pagePath } from '../data/model';
+import { lifespan } from '../data/person';
+import { sections, sitePath } from '../data/site';
+
+export async function getStaticPaths() {
+  const { pages, profiles, getPerson } = await loadArchive();
+  return pages.map(page => {
+    const { data } = page;
+    const related = data.kind === 'person'
+      ? pages.filter(candidate => candidate.data.kind === 'story' && candidate.data.people.includes(data.person))
+      : data.people.flatMap(id => profiles.get(id) ?? []);
+    return {
+      params: { slug: pagePath(page).replace(/\/$/, '') },
+      props: {
+        page,
+        person: data.kind === 'person' ? getPerson(data.person) : undefined,
+        related,
+      },
+    };
+  });
+}
+
+const { page, person, related } = Astro.props;
+const { data } = page;
+const dates = person && lifespan(person, true);
+const portrait = person?.portrait;
+const { Content } = await render(page);
+const collection = data.kind === 'person'
+  ? { id: 'family', title: 'Наша семья' }
+  : sections[data.kind];
+---
+<Site title={data.title} description={data.summary}>
+  <article class="article">
+    <header class="article-header">
+      <div class:list={['shell article-intro', { 'with-cover': portrait }]}>
+        <div>
+          <a class="back-link" href={sitePath(`#${collection.id}`)}>← {collection.title}</a>
+          <h1>{data.title}</h1>
+          {dates && <p class="article-years">{dates}</p>}
+          <p class="article-deck">{data.summary}</p>
+        </div>
+        {portrait &&
+          <img class="article-portrait" src={sitePath(portrait.path)} alt={data.title} width={portrait.width} height={portrait.height} />}
+      </div>
+    </header>
+    <div class="article-copy">
+      <Content />
+      {related.length > 0 && <aside class="related">
+        <h2>{data.kind === 'person' ? 'Наши истории' : 'Люди'}</h2>
+        <ul>{related.map(entry => <li><a href={sitePath(pagePath(entry))}>{entry.data.title}</a></li>)}</ul>
+      </aside>}
+    </div>
+  </article>
+</Site>

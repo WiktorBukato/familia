@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.webp binary
+/Test/index.html -text
+/index.html -text
+/KiselevIvanAkulovich/index.html -text

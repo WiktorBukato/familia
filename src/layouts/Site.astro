@@ -1,0 +1,53 @@
+---
+import '@fontsource/cormorant-garamond/cyrillic-600.css';
+import '@fontsource/cormorant-garamond/latin-600.css';
+import '@fontsource/manrope/cyrillic-400.css';
+import '@fontsource/manrope/cyrillic-700.css';
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-700.css';
+import '../styles/site.css';
+import { menu, siteName, sitePath } from '../data/site';
+
+interface Props {
+  title?: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const preview = import.meta.env.BASE_URL.replace(/\/$/, '') === '/draftversion';
+const mark = sitePath('familia-mark.svg');
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#20372e" />
+    <link rel="icon" href={mark} type="image/svg+xml" />
+    <meta name="description" content={description} />
+    {preview && <meta name="robots" content="noindex, nofollow" />}
+    <title>{title ? `${title} · ${siteName}` : `${siteName} · Семейный архив`}</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">К содержанию</a>
+    <header class="masthead">
+      <div class="shell masthead-inner">
+        <a class="wordmark" href={sitePath()} aria-label={siteName}>
+          <img src={mark} width="36" height="36" alt="" /><span>{siteName}</span>
+        </a>
+        <nav aria-label="Разделы сайта">
+          {menu.map(({ id, title }) => <a href={sitePath(`#${id}`)}>{title}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer>
+      <div class="shell footer-inner">
+        <a class="wordmark" href={sitePath()} aria-label={siteName}>
+          <img src={mark} width="36" height="36" alt="" /><span>{siteName}</span>
+        </a>
+        <p>Семейный архив</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+---
+import type { FamilyNode, Person } from '../data/model';
+import { menu } from '../data/site';
+import { relationLabels } from '../data/person';
+import FamilyBranch from './FamilyBranch.astro';
+import PersonCard from './PersonCard.astro';
+
+interface Props {
+  tree: FamilyNode;
+  profiles: Map<string, string>;
+}
+
+const { tree, profiles } = Astro.props;
+const familySection = menu[0];
+const stackLimit = 7;
+const photographed: Person[] = [];
+for (let generation = [tree]; generation.length && photographed.length < stackLimit; generation = generation.flatMap(branch => branch.children)) {
+  const leads = generation.map(branch => branch.people[0]);
+  const partners = generation.flatMap(branch => branch.people.slice(1));
+  photographed.push(...[...leads, ...partners].filter(person => person.portrait));
+}
+const stackPeople = photographed.slice(0, stackLimit);
+const stackRadius = Math.max(1, Math.floor(stackPeople.length / 2));
+const stackCards = stackPeople.map((person, index) => {
+  const position = Math.ceil(index / 2) / stackRadius * (index % 2 ? -1 : 1);
+  return { person, position };
+}).reverse();
+---
+<section class="family-section shell" id={familySection.id} aria-labelledby="family-title">
+  <div class="family-intro">
+    <div data-reveal>
+      <h2 id="family-title">{familySection.title}</h2>
+      <p>От Ивана Акуловича Киселёва до детей и внуков следующих поколений.</p>
+    </div>
+  </div>
+  <details class="family-details" data-family-details>
+    <summary class="tree-disclosure">
+      <span class="expand-label visually-hidden">Развернуть дерево</span>
+      <span class="collapse-label visually-hidden">Свернуть дерево</span>
+      <span class="disclosure-mark" aria-hidden="true"></span>
+      <span class="photo-stack" aria-hidden="true">
+        {stackCards.map(({ person, position }) =>
+          <span class="photo-stack-slot" style={{ '--slot': position, '--slot-distance': Math.abs(position) }}>
+            <PersonCard person={person} decorative />
+          </span>
+        )}
+      </span>
+    </summary>
+    <figure class="family-diagram">
+      <figcaption class="family-chart-header">
+        <div class="family-key">
+          {Object.entries(relationLabels).map(([relation, label]) => <span data-relation={relation}>{label}</span>)}
+        </div>
+        <div class="family-pan" aria-label="Горизонтальная прокрутка дерева" role="group" hidden>
+          <button type="button" data-pan="-1" aria-label="Дерево левее">←</button>
+          <button type="button" data-pan="1" aria-label="Дерево правее">→</button>
+        </div>
+      </figcaption>
+      <div class="family-scroll" role="region" aria-label="Область просмотра дерева" tabindex="0">
+        <div class="family-plot">
+          <ul class="family-tree" aria-label="Генеалогическое дерево">
+            <FamilyBranch branch={tree} profiles={profiles} />
+          </ul>
+        </div>
+      </div>
+    </figure>
+  </details>
+</section>
+<script>
+  import { drawFamilyBranches } from '../scripts/family-branches';
+  import { animateFamilyCards, measureStack } from '../scripts/family-motion';
+
+  document.querySelectorAll<HTMLDetailsElement>('[data-family-details]').forEach(details => {
+    const summary = details.querySelector('summary');
+    const stack = summary?.querySelector('.photo-stack');
+    const viewport = details.querySelector<HTMLElement>('.family-scroll');
+    const plot = details.querySelector<HTMLElement>('.family-plot');
+    if (!summary || !stack || !viewport || !plot) return;
+    const pan = details.querySelector<HTMLElement>('.family-pan');
+    const panButtons = [...(pan?.querySelectorAll<HTMLButtonElement>('button[data-pan]') ?? [])];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let transitioning = false;
+
+    const updatePan = () => {
+      if (!pan || !details.open) return;
+      const remaining = viewport.scrollWidth - viewport.clientWidth;
+      pan.hidden = remaining <= 1;
+      for (const button of panButtons) {
+        button.disabled = button.dataset.pan === '-1' ? viewport.scrollLeft <= 1 : viewport.scrollLeft >= remaining - 1;
+      }
+    };
+    for (const button of panButtons) {
+      button.addEventListener('click', () => viewport.scrollBy({
+        left: Number(button.dataset.pan) * viewport.clientWidth * .68,
+        behavior: reducedMotion.matches ? 'instant' : 'smooth',
+      }));
+    }
+    viewport.addEventListener('scroll', updatePan, { passive: true });
+    const centerTree = () => {
+      if (viewport.scrollWidth <= viewport.clientWidth) return;
+      const root = plot.querySelector('.family-tree > .family-branch > .household');
+      if (!root) return;
+      const { left, width } = root.getBoundingClientRect();
+      viewport.scrollLeft += left + width / 2 - viewport.getBoundingClientRect().left - viewport.clientWidth / 2;
+    };
+    const redraw = () => {
+      if (!details.open || transitioning) return;
+      updatePan();
+      drawFamilyBranches(plot);
+    };
+
+    const resize = new ResizeObserver(redraw);
+    resize.observe(plot);
+    resize.observe(viewport);
+    details.addEventListener('toggle', () => {
+      if (!details.open || transitioning) return;
+      centerTree();
+      redraw();
+    });
+
+    summary.addEventListener('click', async event => {
+      if (!transitioning && reducedMotion.matches) return;
+      event.preventDefault();
+      if (transitioning) return;
+
+      transitioning = true;
+      const opening = !details.open;
+      const phase = opening ? 'unfolding' : 'folding';
+      const scrollLeft = viewport.scrollLeft;
+      const { scrollX, scrollY } = window;
+
+      // Measure the actual closed layout, even if the window was resized with the tree open.
+      details.open = false;
+      const stackPositions = measureStack(stack);
+      details.open = true;
+      window.scrollTo({ left: scrollX, top: scrollY, behavior: 'instant' });
+
+      if (opening) centerTree();
+      else viewport.scrollLeft = scrollLeft;
+      updatePan();
+      drawFamilyBranches(plot);
+      details.classList.add(phase);
+
+      try {
+        await animateFamilyCards(plot, stackPositions, opening);
+      } finally {
+        details.open = opening;
+        details.classList.remove(phase);
+        transitioning = false;
+        redraw();
+      }
+    });
+  });
+</script>

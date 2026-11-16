@@ -1,0 +1,36 @@
+---
+import type { Person } from '../data/model';
+import { sitePath } from '../data/site';
+import { relationLabels } from '../data/person';
+
+interface Props {
+  person: Person;
+  profile?: string;
+  decorative?: boolean;
+  relation?: keyof typeof relationLabels;
+}
+
+const { person, profile, decorative = false, relation } = Astro.props;
+const Tag = decorative ? 'span' : profile ? 'a' : 'div';
+const nameParts = person.name.trim().split(/\s+/);
+const initials = nameParts.filter((_, index) => index === 0 || index === nameParts.length - 1)
+  .map(part => part[0]).join('');
+const { portrait } = person;
+const variation = [...person.id].reduce((seed, character) => Math.imul(seed, 31) + character.charCodeAt(0), 0) >>> 0;
+const placement = decorative ? undefined : {
+  '--card-x': variation % 7 - 3,
+  '--card-y': (variation >>> 8) % 7 - 3,
+  '--card-angle': (variation >>> 16) % 9 - 4,
+};
+---
+<Tag class:list={['person-card', { 'has-profile': Tag === 'a' }]} style={placement} data-relation={relation} href={Tag === 'a' ? profile : undefined}>
+  <span class="portrait">
+    {portrait
+      ? <img src={sitePath(portrait.path)} alt="" width={portrait.width} height={portrait.height} />
+      : <span aria-hidden="true" class="initials">{initials}</span>}
+  </span>
+  {!decorative && <span class="person-label">
+    <span class="person-name">{nameParts.map((part, index) => <>{index > 0 && ' '}<span class="person-name-part">{part}</span></>)}</span>
+    {relation && <span class="visually-hidden">{relationLabels[relation]}</span>}
+  </span>}
+</Tag>

@@ -1,0 +1,39 @@
+{
+  "root": "ivan-akulovich",
+  "people": [
+    { "id": "ivan-akulovich", "name": "Иван Акулович Киселёв", "birth": "1891", "death": "1973-09-24", "portrait": { "path": "media/ivan-kiselev.webp", "width": 575, "height": 554 } },
+    { "id": "zinaida-ivan", "name": "Зинаида" },
+    { "id": "anna", "name": "Анна Ивановна Киселёва", "birth": "1924" },
+    { "id": "anatoly", "name": "Анатолий Иванович Киселёв", "birth": "1930", "portrait": { "path": "media/anatoly-kiselev.webp", "width": 512, "height": 512 } },
+    { "id": "paraskeva", "name": "Параскева Ивановна Киселёва", "birth": "1931" },
+    { "id": "lyudmila-anatoly", "name": "Людмила Ивановна Киселёва", "portrait": { "path": "media/lyudmila-kiseleva.webp", "width": 512, "height": 512 } },
+    { "id": "zinaida-chernogubovskaya", "name": "Зинаида Анатольевна Черногубовская", "portrait": { "path": "media/zinaida-chernogubovskaya.webp", "width": 512, "height": 512 } },
+    { "id": "konstantin", "name": "Константин Анатольевич Киселёв", "portrait": { "path": "media/konstantin-kiselev.webp", "width": 512, "height": 512 } },
+    { "id": "nadezhda", "name": "Надежда Анатольевна Орловская", "portrait": { "path": "media/nadezhda-orlovskaya.webp", "width": 512, "height": 512 } },
+    { "id": "sergey", "name": "Сергей Черногубовский", "portrait": { "path": "media/sergey-chernogubovsky.webp", "width": 512, "height": 512 } },
+    { "id": "irina", "name": "Ирина Сергеевна Белявская", "portrait": { "path": "media/irina-belyavskaya.webp", "width": 512, "height": 512 } },
+    { "id": "dmitry", "name": "Дмитрий Белявский", "portrait": { "path": "media/dmitry-belyavsky.webp", "width": 512, "height": 512 } },
+    { "id": "zakhar", "name": "Захар Дмитриевич Белявский", "portrait": { "path": "media/zakhar-belyavsky.webp", "width": 512, "height": 512 } },
+    { "id": "alexandra", "name": "Александра Дмитриевна Белявская", "portrait": { "path": "media/alexandra-belyavskaya.webp", "width": 512, "height": 512 } },
+    { "id": "igor", "name": "Игорь Сергеевич Черногубовский", "portrait": { "path": "media/igor-chernogubovsky.webp", "width": 512, "height": 512 } },
+    { "id": "alla", "name": "Алла Киселева", "portrait": { "path": "media/alla-kiseleva.webp", "width": 512, "height": 512 } },
+    { "id": "pavel", "name": "Павел Константинович Киселёв", "portrait": { "path": "media/pavel-kiselev.webp", "width": 512, "height": 512 } },
+    { "id": "vlad", "name": "Влад Константинович Киселёв", "portrait": { "path": "media/vlad-kiselev.webp", "width": 512, "height": 512 } },
+    { "id": "gennady", "name": "Геннадий Орловский" },
+    { "id": "lyudmila-orlovskaya", "name": "Людмила Геннадьевна Орловская", "portrait": { "path": "media/lyudmila-orlovskaya.webp", "width": 512, "height": 512 } },
+    { "id": "wiktor", "name": "Виктор Константинович Букато", "portrait": { "path": "media/wiktor-bukato.webp", "width": 512, "height": 512 } },
+    { "id": "agniya", "name": "Агния Викторовна Букато", "portrait": { "path": "media/agniya-bukato.webp", "width": 512, "height": 512 } },
+    { "id": "olga", "name": "Ольга Геннадьевна Орловская", "portrait": { "path": "media/olga-orlovskaya.webp", "width": 512, "height": 512 } },
+    { "id": "artem-marey", "name": "Артем Марей", "portrait": { "path": "media/artem-marey.webp", "width": 512, "height": 512 } }
+  ],
+  "unions": [
+    { "partners": ["ivan-akulovich", "zinaida-ivan"], "children": ["anna", "anatoly", "paraskeva"] },
+    { "partners": ["anatoly", "lyudmila-anatoly"], "children": ["zinaida-chernogubovskaya", "konstantin", "nadezhda"] },
+    { "partners": ["zinaida-chernogubovskaya", "sergey"], "children": ["irina", "igor"] },
+    { "partners": ["konstantin", "alla"], "children": ["pavel", "vlad"] },
+    { "partners": ["nadezhda", "gennady"], "children": ["lyudmila-orlovskaya", "olga"] },
+    { "partners": ["irina", "dmitry"], "children": ["zakhar", "alexandra"] },
+    { "partners": ["lyudmila-orlovskaya", "wiktor"], "children": ["agniya"] },
+    { "partners": ["olga", "artem-marey"], "children": [] }
+  ]
+}

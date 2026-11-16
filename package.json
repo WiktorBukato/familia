@@ -1,0 +1,20 @@
+{
+  "name": "familia",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:draft": "astro build --base /draftversion/ --outDir dist-draft",
+    "build:review": "npm run build && node scripts/portable-review.mjs",
+    "preview": "astro preview",
+    "verify": "node scripts/verify-site.mjs dist",
+    "verify:draft": "node scripts/verify-site.mjs dist-draft /draftversion/"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "5.3.0",
+    "@fontsource/manrope": "5.3.0",
+    "astro": "6.4.8"
+  }
+}
