@@ -1,0 +1,89 @@
+name: Family archive · Publish
+run-name: Pages · root ${{ inputs.current }} · draft ${{ inputs.candidate || 'none' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      current:
+        description: Full commit SHA to serve at the root
+        required: true
+        type: string
+      candidate:
+        description: Full reviewed commit SHA for /draftversion/ (leave empty for release or rollback)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: family-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate revisions
+        env:
+          CURRENT: ${{ inputs.current }}
+          CANDIDATE: ${{ inputs.candidate }}
+        run: |
+          [[ "$CURRENT" =~ ^[0-9a-f]{40}$ ]] || { echo 'Use a full commit SHA for the root'; exit 1; }
+          [[ -z "$CANDIDATE" || "$CANDIDATE" =~ ^[0-9a-f]{40}$ ]] || { echo 'Use a full commit SHA for the draft'; exit 1; }
+          [[ "$CURRENT" != "$CANDIDATE" ]] || { echo 'Supply different root and draft revisions'; exit 1; }
+      - uses: actions/checkout@v7
+        with:
+          path: workflow
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.current }}
+          path: current
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        if: inputs.candidate != ''
+        with:
+          ref: ${{ inputs.candidate }}
+          path: candidate
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.1'
+          package-manager-cache: false
+      - name: Build root
+        run: |
+          if [[ -f current/astro.config.mjs ]]; then
+            npm --prefix current ci
+            npm --prefix current run build
+            npm --prefix current run verify
+            mv current/dist pages
+          else
+            node workflow/scripts/legacy-pages.mjs current pages
+          fi
+      - name: Attach reviewed draft
+        if: inputs.candidate != ''
+        run: |
+          npm --prefix candidate ci
+          npm --prefix candidate run build:draft
+          npm --prefix candidate run verify:draft
+          test ! -e pages/draftversion
+          mv candidate/dist-draft pages/draftversion
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
